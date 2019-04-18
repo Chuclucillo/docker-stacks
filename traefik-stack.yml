@@ -1,0 +1,22 @@
+version: "3.5"
+services:
+  traefik:
+    image: traefik
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 9001:8080
+    expose:
+      - 8080
+    networks:
+      - proxied_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/deploy/traefik/traefik.toml:/traefik.toml
+      - /home/deploy/traefik/acme.json:/acme.json
+      - /home/deploy/traefik/logs/:/logs
+    container_name: traefik
+networks:
+  proxied_net:
+    external: true
