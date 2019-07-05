@@ -1,0 +1,23 @@
+version: '3'
+services:
+  traefik:
+    image: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./traefik.toml:/traefik.toml"
+      - "./acme.json:/acme.json"
+    networks:
+      - proxied_net
+    labels:
+      - "traefik.docker.network=proxied_net"
+      - "traefik.enable=true"
+      - "traefik.basic.frontend.rule=Host:traefik.dedomingo.net"
+      - "traefik.basic.protocol=http"
+      - "traefik.basic.port=8080"
+networks:
+  proxied_net:
+    external: true
+
